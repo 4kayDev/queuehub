@@ -1,4 +1,4 @@
-package queuehub
+package queue-hub
 
 import (
 	"context"

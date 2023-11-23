@@ -1,1 +1,1 @@
-queue-manager
+queue-hub
