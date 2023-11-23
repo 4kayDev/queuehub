@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"sync"
 
-	queuehub "github.com/4kayDev/queue-hub/interface"
-	"github.com/4kayDev/queue-hub/pkg/config"
+	queuehub "github.com/4kayDev/queuehub/interface"
+	"github.com/4kayDev/queuehub/pkg/config"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"

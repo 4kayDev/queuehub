@@ -1,1 +1,1 @@
-queue-hub
+queuehub

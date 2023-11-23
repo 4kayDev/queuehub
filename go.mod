@@ -1,4 +1,4 @@
-module github.com/4kayDev/queue-hub
+module github.com/4kayDev/queuehub
 
 go 1.21.4
 
