@@ -206,6 +206,7 @@ func (c *YandexQueueClient[T]) Consume(ctx context.Context, handler queuehub.Con
 		case queuehub.DEFER:
 			_, err := c.client.ChangeMessageVisibility(ctx, &sqs.ChangeMessageVisibilityInput{
 				QueueUrl:          c.queueURL,
+				ReceiptHandle:     msg.ReceiptHandle,
 				VisibilityTimeout: c.cfg.DelayStep, //ToDo Increase
 			})
 
