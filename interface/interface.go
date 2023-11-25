@@ -27,7 +27,7 @@ type Producer[T any] interface {
 }
 
 type QueuesClient[T any] interface {
-	Connect(ctx context.Context) error
 	Consumer[T]
 	Producer[T]
 }
+
