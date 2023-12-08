@@ -204,10 +204,21 @@ func (c *YandexQueueClient[T]) Consume(ctx context.Context, handler queuehub.Con
 
 			break
 		case queuehub.DEFER:
+			if attemptCount > 10 {
+				_, err := c.client.DeleteMessage(ctx, &sqs.DeleteMessageInput{
+					QueueUrl:      c.queueURL,
+					ReceiptHandle: msg.ReceiptHandle,
+				})
+
+				if err != nil {
+					log.Println(err, "Error occured in processing NACK case")
+					return err
+				}
+			}
 			_, err := c.client.ChangeMessageVisibility(ctx, &sqs.ChangeMessageVisibilityInput{
 				QueueUrl:          c.queueURL,
 				ReceiptHandle:     msg.ReceiptHandle,
-				VisibilityTimeout: c.cfg.DelayStep, //ToDo Increase
+				VisibilityTimeout: c.cfg.DelayStep * int32(attemptCount),
 			})
 
 			if err != nil {
