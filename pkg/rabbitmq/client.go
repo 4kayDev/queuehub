@@ -211,8 +211,11 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 		}
 
 		if retriesCount >= c.cfg.MaxRerties {
-			log.Printf("Message with ID: %s reached the maximum retries")
-			msg.Ack(false)
+			log.Printf("Message with ID: %s reached the maximum retries", msg.MessageId)
+			err = msg.Ack(false)
+			if err != nil {
+				return err
+			}
 		}
 
 		dest := new(T)
