@@ -128,7 +128,7 @@ func (c *QueueClient[T]) ensureQueueExists(ctx context.Context) error {
 	c.mu.RLock()
 	if c.queue == nil {
 		c.mu.RUnlock()
-		c.createQueue(ctx)
+		return c.createQueue(ctx)
 	}
 
 	c.mu.RUnlock()
