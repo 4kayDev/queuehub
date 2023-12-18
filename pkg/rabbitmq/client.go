@@ -202,7 +202,9 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 		false, // no-await
 		nil,
 	)
+	var forever chan struct {
 
+	}
 	for msg := range msgs {
 		retriesCount, ok := msg.Headers["x-death"].([]interface{})[0].(amqp.Table)["count"].(int32)
 		if !ok {
@@ -250,7 +252,7 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 			}
 		}
 	}
-
+	<-forever 
 	return nil
 }
 
