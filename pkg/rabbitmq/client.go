@@ -194,7 +194,7 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 	}
 
 	msgs, err := c.channel.Consume(
-		c.dlQueue.Name,
+		c.queue.Name,
 		"",
 		false, // auto-ACK
 		false, // IsExclusive
