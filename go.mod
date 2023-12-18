@@ -19,4 +19,5 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.18.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.24.0 // indirect
 	github.com/aws/smithy-go v1.17.0 // indirect
+	github.com/rabbitmq/amqp091-go v1.9.0
 )
