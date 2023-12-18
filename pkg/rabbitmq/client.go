@@ -205,10 +205,13 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 	var forever chan struct {
 	}
 	for msg := range msgs {
-		retriesCount, ok := msg.Headers["x-death"].([]interface{})[20].(amqp.Table)["count"].(int32)
-		if !ok {
+		var retriesCount int32 = 0
+		xDeath, ok := msg.Headers["x-death"].([]interface{})
+		if !ok || xDeath == nil {
 			log.Printf("Failed to get retriesCount on message with ID: %s", msg.MessageId)
 			retriesCount = 0
+		} else {
+			retriesCount = xDeath[0].(amqp.Table)["count"].(int32)
 		}
 
 		if retriesCount >= c.cfg.MaxRerties {
