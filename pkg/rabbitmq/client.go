@@ -181,7 +181,7 @@ func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesC
 			DeliveryMode: amqp.Persistent,
 			Type:         "plain/text",
 			Body:         body,
-			Expiration:   string(exp),
+			Expiration:   "5000",
 		},
 	)
 
