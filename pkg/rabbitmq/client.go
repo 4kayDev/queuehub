@@ -194,7 +194,7 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 	}
 
 	msgs, err := c.channel.Consume(
-		c.queue.Name,
+		c.dlQueue.Name,
 		"",
 		false, // auto-ACK
 		false, // IsExclusive
@@ -203,10 +203,9 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 		nil,
 	)
 	var forever chan struct {
-
 	}
 	for msg := range msgs {
-		retriesCount, ok := msg.Headers["x-death"].([]interface{})[0].(amqp.Table)["count"].(int32)
+		retriesCount, ok := msg.Headers["x-death"].([]interface{})[20].(amqp.Table)["count"].(int32)
 		if !ok {
 			log.Printf("Failed to get retriesCount on message with ID: %s", msg.MessageId)
 			retriesCount = 0
@@ -252,7 +251,7 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 			}
 		}
 	}
-	<-forever 
+	<-forever
 	return nil
 }
 
