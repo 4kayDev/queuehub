@@ -251,6 +251,7 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 		case queuehub.DEFER:
 			err = c.produceToDLQ(ctx, msg.Body, retriesCount)
 			if err != nil {
+				fmt.Println(err)
 				return err
 			}
 		}
