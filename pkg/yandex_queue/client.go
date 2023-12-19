@@ -172,7 +172,7 @@ func (c *YandexQueueClient[T]) Consume(ctx context.Context, handler queuehub.Con
 			}
 		}
 
-		result, err := handler(ctx, *destination, &queuehub.Meta{AttemptNumber: int32(attemptCount)})
+		result, err := handler(ctx, *destination, &queuehub.Meta{AttemptNumber: int64(attemptCount)})
 		if err != nil {
 			return err
 		}

@@ -13,7 +13,7 @@ const (
 )
 
 type Meta struct {
-	AttemptNumber int32
+	AttemptNumber int64
 }
 
 type ConsumerFunc[T any] func(ctx context.Context, msg T, meta *Meta) (Result, error)

@@ -44,5 +44,5 @@ type RabbitMQQueueConfig struct {
 	IsLazyMode   bool
 	MaxLength    int32
 	TTL          int32
-	MaxRerties   int32
+	MaxRerties   int64
 }

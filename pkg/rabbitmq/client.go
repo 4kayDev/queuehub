@@ -163,7 +163,7 @@ func (c *QueueClient[T]) Produce(ctx context.Context, msg T) error {
 	return err
 }
 
-func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesCount int32) error {
+func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesCount int64) error {
 	err := c.ensureQueueExists(ctx)
 	if err != nil {
 		return err
@@ -206,13 +206,13 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 	var forever chan struct {
 	}
 	for msg := range msgs {
-		var retriesCount int32 = 0
+		var retriesCount int64 = 0
 		xDeath, ok := msg.Headers["x-death"].([]interface{})
 		if !ok || xDeath == nil {
 			log.Printf("Failed to get retriesCount on message with ID: %s", msg.MessageId)
 			retriesCount = 0
 		} else {
-			retriesCount = xDeath[0].(amqp.Table)["count"].(int32)
+			retriesCount = xDeath[0].(amqp.Table)["count"].(int64)
 		}
 
 		if retriesCount >= c.cfg.MaxRerties {
