@@ -253,6 +253,10 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 			if err != nil {
 				return err
 			}
+			err = msg.Ack(false)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	<-forever
