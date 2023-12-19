@@ -3,7 +3,6 @@ package rabbitmq
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"sync"
 
@@ -170,7 +169,6 @@ func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesC
 	}
 
 	exp := c.cfg.TTL * int32(retriesCount+1)
-	fmt.Println(exp)
 	err = c.channel.PublishWithContext(
 		ctx,
 		c.cfg.DlxName,
@@ -182,7 +180,7 @@ func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesC
 			DeliveryMode: amqp.Persistent,
 			Type:         "plain/text",
 			Body:         body,
-			Expiration:   "5000",
+			Expiration:   string(exp),
 		},
 	)
 
