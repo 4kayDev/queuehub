@@ -181,7 +181,7 @@ func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesC
 			DeliveryMode: amqp.Persistent,
 			Type:         "plain/text",
 			Body:         body,
-			Expiration:   "15000",
+			Expiration:   "5000",
 		},
 	)
 
@@ -284,6 +284,6 @@ func buildQueueArgs(cfg *config.RabbitMQQueueConfig) amqp.Table {
 func buildDLQArgs(cfg *config.RabbitMQQueueConfig) amqp.Table {
 	return amqp.Table{
 		"x-dead-letter-exchange":    cfg.DlxName,
-		"x-dead-letter-routing-key": cfg.RoutingKey + "_dlq",
+		"x-dead-letter-routing-key": cfg.RoutingKey,
 	}
 }
