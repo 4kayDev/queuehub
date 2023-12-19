@@ -163,7 +163,7 @@ func (c *QueueClient[T]) Produce(ctx context.Context, msg T) error {
 	return err
 }
 
-func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesCount int64, xDeath []interface{}) error {
+func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesCount int64, table amqp.Table) error {
 	err := c.ensureQueueExists(ctx)
 	if err != nil {
 		return err
@@ -178,7 +178,7 @@ func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesC
 		false,
 		false,
 		amqp.Publishing{
-			Headers:      amqp.Table{"x-death": xDeath},
+			Headers:      table,
 			DeliveryMode: amqp.Persistent,
 			Type:         "plain/text",
 			Body:         body,
@@ -250,7 +250,7 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 				return err
 			}
 		case queuehub.DEFER:
-			err = c.produceToDLQ(ctx, msg.Body, retriesCount, xDeath)
+			err = c.produceToDLQ(ctx, msg.Body, retriesCount, msg.Headers)
 			if err != nil {
 				return err
 			}
