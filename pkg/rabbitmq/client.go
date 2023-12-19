@@ -181,7 +181,7 @@ func (c *QueueClient[T]) produceToDLQ(ctx context.Context, body []byte, retriesC
 			DeliveryMode: amqp.Persistent,
 			Type:         "plain/text",
 			Body:         body,
-			Expiration:   "5000",
+			Expiration:   "15000",
 		},
 	)
 
@@ -251,7 +251,6 @@ func (c *QueueClient[T]) Consume(ctx context.Context, handler queuehub.ConsumerF
 		case queuehub.DEFER:
 			err = c.produceToDLQ(ctx, msg.Body, retriesCount)
 			if err != nil {
-				fmt.Println(err)
 				return err
 			}
 		}
