@@ -66,7 +66,7 @@ func (c *QueueClient[T]) createQueue(ctx context.Context) error {
 	// Declaring exchange for communication with master and DL queues
 	err = c.channel.ExchangeDeclare(
 		c.cfg.DlxName,
-		"direct",
+		"fanout",
 		c.cfg.IsDurable,
 		c.cfg.IsAutoDelete,
 		false,
